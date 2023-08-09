@@ -87,7 +87,6 @@
 @endsection
 
 @push('js')
-@include('adminlte.common.script')
 <script type="text/javascript">
   $(function () {
 

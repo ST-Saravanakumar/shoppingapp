@@ -2,7 +2,7 @@
     $(function() {
         $(document).on('click', '.btn-delete', function(event) {
             let id = $(this).data('id');
-            let module
+            let module;
             
             Swal.fire({
                 title: 'Are you sure?',
