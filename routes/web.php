@@ -80,5 +80,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
         Route::match(['GET', 'POST'], '/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings.index');
 
+        Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders.index');
+        Route::get('/order/summary/{id}', [App\Http\Controllers\Admin\OrderController::class, 'summary'])->name('admin.orders.summary');
+
     });
 });

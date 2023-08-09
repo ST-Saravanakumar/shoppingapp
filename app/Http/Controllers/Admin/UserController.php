@@ -70,9 +70,8 @@ class UserController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-        } else {
-            return view('adminlte.users.index');
         }
+        return view('adminlte.users.index');
     }
 
 

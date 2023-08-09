@@ -32,6 +32,10 @@
                     @endif
 					<li><a href="profile-details.html">Profile Details</a></li>
 				</ul>
+
+                <h3 class="text-center">{{ $page_title ?? 'My Account' }}</h3>
+
+                <div class="float-right"><a href="{{ route('orders') }}" class="btn btn-info">Back</a></div>
 				<div class="dashboard-wrapper user-dashboard">
 					<div class="table-responsive">
                         @if( session()->has('success') )
@@ -40,32 +44,41 @@
                         @if( session()->has('error') )
                         <p class="alert alert-danger text-center">{{ session()->get('error') }}</p>
                         @endif
-						<table class="table">
+						<table class="table table-responsive table-condensed">
 							<thead>
 								<tr>
-									<th>Order ID</th>
-									<th>Date</th>
-									<th>Total Price</th>
-									<th>Status</th>
+									<th>Product Name</th>
+                                    <th>Product Image</th>
+									<th>Quantity</th>
+									<th>Unit Price</th>
+									<th>Sub Total</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
-                                @forelse($orders as $order)
+                                @forelse($order_items as $item)
                                 <tr>
-                                    <td>#{{ $order->id }}</td>
-                                    <td>{{ format_date($order->created_at) }}</td>
-                                    <td>{{ format_price($order->grand_total) }}</td>
-                                    <td>
-                                        <span class="label label-{{ ($order->status=='paid') ? 'success' : 'default' }}">{{ ucfirst($order->status) }}</span>
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-default">View</a>
-                                    </td>
+                                    <td>{{ $item['product_name'] }}</td>
+                                    <td><img src="{{ $item['product_image'] }}" class="img-responsive"></td>
+                                    <td>{{ $item['quantity'] }}</td>
+                                    <td>{{ format_price($item['unit_price']) }}</td>
+                                    <td>{{ format_price($item['sub_total']) }}</td>
                                 </tr>
                                 @empty
                                 
                                 @endforelse
+                                <tr>
+                                    <td colspan="3"></td>
+                                    <th><span>Grand Total</span></th>
+                                    <td><strong>{{ format_price($order->grand_total) }}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"></td>
+                                    <th><span>Payment Status</span></th>
+                                    <td>
+                                        <span class="label label-{{ ($order->status == 'paid') ? 'success' : 'default' }}">{{ ucfirst($order->status) }}</span>
+                                    </td>
+                                </tr>
 							</tbody>
 						</table>
 					</div>
@@ -75,15 +88,3 @@
 	</div>
 </section>
 @endsection
-
-@push('js')
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-<script>
-    $(function() {
-        // $('table.table').dataTable();
-        let table = new DataTable('table.table', {
-            responsive: true
-        });
-    });
-</script>
-@endpush

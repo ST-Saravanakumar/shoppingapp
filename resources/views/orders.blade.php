@@ -32,7 +32,9 @@
                     @endif
 					<li><a href="profile-details.html">Profile Details</a></li>
 				</ul>
+
                 <h3 class="text-center">{{ $page_title ?? 'My Account' }}</h3>
+                
 				<div class="dashboard-wrapper user-dashboard">
 					<div class="table-responsive">
                         @if( session()->has('success') )

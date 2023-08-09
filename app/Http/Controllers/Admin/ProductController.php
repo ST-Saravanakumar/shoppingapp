@@ -96,9 +96,8 @@ class ProductController extends Controller
                 })
                 ->rawColumns(['status', 'action'])
                 ->make(true);
-        } else {
-            return view('adminlte.products.index');
         }
+        return view('adminlte.products.index');
     }
 
     public function store_product(Request $request)

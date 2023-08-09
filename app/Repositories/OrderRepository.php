@@ -26,7 +26,7 @@ class OrderRepository implements OrderRepositoryInterface
                 'product_id' => $item->id,
                 'quantity' => $item->quantity,
                 'unit_price' => $item->price,
-                'sub_total' => $item->quantity * $item->unit_price,
+                'sub_total' => $item->quantity * $item->price,
             ]);
         }
 

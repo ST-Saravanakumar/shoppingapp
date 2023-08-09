@@ -62,9 +62,9 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-first-order"></i>
+                <li class="nav-item {{ url()->current() == route('admin.orders.index') ? 'menu-open' : '' }}">
+                    <a href="{{ route('admin.orders.index') }}" class="nav-link {{ url()->current() == route('admin.orders.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-th"></i>
                         <p>Manage Orders</span>
                         </p>
                     </a>
