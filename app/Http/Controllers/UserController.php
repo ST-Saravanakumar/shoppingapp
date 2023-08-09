@@ -16,7 +16,7 @@ class UserController extends Controller
     }
 
     public function orders(Request $request) {
-        $data['page_title'] = 'Orders';
+        $data['page_title'] = 'My Orders';
         $data['orders'] = $this->orderRepository->getOrders(auth()->user()->id);
 
         return view('orders', $data);
@@ -37,8 +37,13 @@ class UserController extends Controller
                 'sub_total' => $value->sub_total,
             ];
             $product = Product::find($value->product_id);
-            $data['order_items'][$i]['product_name'] = $product->name;
-            $data['order_items'][$i]['product_image'] = $product->getFirstMediaUrl('product_images');
+            if($product) {
+                $data['order_items'][$i]['product_name'] = $product->name;
+                $data['order_items'][$i]['product_image'] = $product->getFirstMediaUrl('product_images');
+            } else {
+                $data['order_items'][$i]['product_name'] = 'Deleted Product';
+                $data['order_items'][$i]['product_image'] = url()->asset('/assets/frontend/images/img_not_available.png');
+            }
             $i++;
         }
 

@@ -91,7 +91,7 @@ class ProductController extends Controller
                 })
                 ->addColumn('action', function($row){
                     $edit_url = route('admin.products.edit', ['id' => $row->id]);
-                    $actionBtn = '<a href="'. $edit_url .'" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm btn-delete" data-id="'.$row->id.'" data-module="users">Delete</a>';
+                    $actionBtn = '<a href="'. $edit_url .'" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm btn-delete" data-id="'.$row->id.'" data-module="products">Delete</a>';
                     return $actionBtn;
                 })
                 ->rawColumns(['status', 'action'])

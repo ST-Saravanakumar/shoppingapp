@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Product;
 use App\Models\Category;
+use Cart;
 
 class ProductSearchController extends Controller
 {
@@ -14,18 +15,7 @@ class ProductSearchController extends Controller
     // }
 
     public function index(Request $request) {
-        // \Cart::session(auth()->user()->id)->clear();
-
-        // dd(\Cart::session(auth()->user()->id)->getContent());
-
-
-        // foreach(\Cart::session(auth()->user()->id)->getContent()->toArray() as $key => $item) {
-        //     echo "<pre>"; print_r($item);
-        // }
-
-        // exit;
-
-
+        
         $data['page_title'] = 'Products';
         $data['categories'] = Category::onlyActive()->get();
 
@@ -67,6 +57,10 @@ class ProductSearchController extends Controller
     public function view(Request $request, $id) {
         $data['product'] = Product::with('owner', 'category')->findOrFail($id);
         $data['related_products'] = Product::onlyActive()->where('category_id', $data['product']->category_id)->get();
+        $data['current_quantity'] = 0;
+        if(auth()->user() && \Cart::session(auth()->user()->id)->get($data['product']->id)) {
+            $data['current_quantity'] = \Cart::session(auth()->user()->id)->get($data['product']->id)->quantity;
+        }
         return view('product_view', $data);
     }
 }

@@ -28,15 +28,25 @@
                     //     'success'
                     // );
 
-                    $.toast({
-                        heading: 'Success',
-                        text: 'Item added to your cart successfully',
-                        hideAfter: 3000,
-                        icon: 'success',
-                        positon: 'top-right'
-                    });
+                    if(resp.error) {
+                        $.toast({
+                            heading: 'Error',
+                            text: resp.error,
+                            hideAfter: 3000,
+                            icon: 'error',
+                            positon: 'top-right'
+                        });
+                    } else {
+                        $.toast({
+                            heading: 'Success',
+                            text: 'Item added to your cart successfully',
+                            hideAfter: 3000,
+                            icon: 'success',
+                            positon: 'top-right'
+                        });
 
-                    $('#cart-dropdown-html').html(resp.cart_html);
+                        $('#cart-dropdown-html').html(resp.cart_html);
+                    }
                 },
                 error: function(err) {
                     Swal.fire(

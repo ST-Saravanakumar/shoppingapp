@@ -5,8 +5,6 @@
 <link rel="stylesheet" href="{{ URL::asset('/assets/adminlte/plugins/ion-rangeslider/css/ion.rangeSlider.min.css') }}">
 <!-- bootstrap slider -->
 <link rel="stylesheet" href="{{ URL::asset('/assets/adminlte/plugins/bootstrap-slider/css/bootstrap-slider.min.css') }}">
-<link href="{{ URL::asset('/assets/frontend/css/jquery.toast.css') }}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.min.css">
 <style>
     .widget {
         padding-bottom: 0px !important;
@@ -156,7 +154,6 @@
 @endsection
 
 @push('js')
-@include('cart_script')
 <!-- Ion Slider -->
 <script src="{{ URL::asset('/assets/adminlte/plugins/ion-rangeslider/js/ion.rangeSlider.min.js') }}"></script>
 <!-- Bootstrap slider -->

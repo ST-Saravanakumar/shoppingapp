@@ -26,9 +26,9 @@
 			<div class="col-md-12">
 				<ul class="list-inline dashboard-menu text-center">
 					<li><a href="dashboard.html">Dashboard</a></li>
-					<li><a class="active">Orders</a></li>
+					<li><a class="active">My Orders</a></li>
                     @if(auth()->user()->hasRole('vendor'))
-                    <li><a href="profile-details.html">Products</a></li>
+                    <li><a href="profile-details.html">My Products</a></li>
                     @endif
 					<li><a href="profile-details.html">Profile Details</a></li>
 				</ul>

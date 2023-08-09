@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Product;
 use App\Traits\CrudTrait;
 
 class OrderController extends Controller
@@ -48,23 +49,22 @@ class OrderController extends Controller
                     return '<span class="badge badge-'. $color .'">'. ucfirst($row->status) .'</span>';
                 })
                 ->editColumn('order.user', function ($row) {
-                    return ucfirst($row->user->first_name);
+                    return ($row->user) ? ucfirst($row->user->first_name) : 'Deleted User';
                 })
                 ->editColumn('created_at', function ($row) {
                     return Carbon::createFromFormat('Y-m-d H:i:s', $row->created_at);
                 })
                 ->addColumn('action', function($row){
-                    $actionBtn = '<a href="" class="edit btn btn-success btn-sm">View</a>';
-                    return $actionBtn;
+                    return '<a href="'. route('admin.order.summary', ['id' => $row->id]) .'" class="edit btn btn-success btn-sm">View</a>';
                 })
-                ->rawColumns(['id', 'status', 'action'])
+                ->rawColumns(['status', 'action'])
                 ->make(true);
         }
         return view('adminlte.orders.index');
     }
 
-    public function summary(Request $request) {
-        $order = Order::with('order_items')->where('user_id', auth()->user()->id)->findOrFail($order_id);
+    public function summary(Request $request, $order_id) {
+        $order = Order::with(['user', 'order_items'])->findOrFail($order_id);
         $data['order'] = $order;
         $data['order_items'] = [];
         $i = 0;
@@ -76,8 +76,13 @@ class OrderController extends Controller
                 'sub_total' => $value->sub_total,
             ];
             $product = Product::find($value->product_id);
-            $data['order_items'][$i]['product_name'] = $product->name;
-            $data['order_items'][$i]['product_image'] = $product->getFirstMediaUrl('product_images');
+            if($product) {
+                $data['order_items'][$i]['product_name'] = $product->name;
+                $data['order_items'][$i]['product_image'] = $product->getFirstMediaUrl('product_images');
+            } else {
+                $data['order_items'][$i]['product_name'] = 'Deleted Product';
+                $data['order_items'][$i]['product_image'] = url()->asset('/assets/frontend/images/img_not_available.png');
+            }
             $i++;
         }
 

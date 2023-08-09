@@ -28,6 +28,8 @@ class OrderRepository implements OrderRepositoryInterface
                 'unit_price' => $item->price,
                 'sub_total' => $item->quantity * $item->price,
             ]);
+
+            Product::find($item->id)->decrement('stock_quantity', $item->quantity);
         }
 
         $cart->clear();

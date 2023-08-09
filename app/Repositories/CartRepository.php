@@ -10,11 +10,28 @@ use App\Models\Product;
 
 class CartRepository implements CartRepositoryInterface 
 {
+    public function validateQuantity($params) {
+        $item = \Cart::session( auth()->user()->id )->get($params['product_id']);
+        $product = Product::find($params['product_id']);
+
+        $resp = [
+            'valid' => true,
+            'error' => '',
+        ];
+        if($params['change_type'] != 'decrease' && $item && $item->quantity >= $product->stock_quantity) {
+            $resp['error'] = 'Out of stock. Maximum available stock quantity is '.$product->stock_quantity;
+            $resp['valid'] = false;
+        }
+        return $resp;
+    }
+
     public function addOrUpdate($params, $model = null) {
         $mode = 'added';
-        if($item = \Cart::get($params['product_id'])) {
+        // $item = \Cart::session(auth()->user()->id)->get($params['product_id']);
+        // dd($item);
+        if($item = \Cart::session(auth()->user()->id)->get($params['product_id'])) {
             \Cart::update($params['product_id'], array(
-                'quantity' => 1
+                'quantity' => $params['quantity']
             ));
             $mode = 'updated';
         } else {
@@ -27,7 +44,6 @@ class CartRepository implements CartRepositoryInterface
                 'attributes' => array(
                     'img' => $model->getFirstMediaUrl('product_images'),
                 ),
-                // 'associatedModel' => $model
             ));
         }
 

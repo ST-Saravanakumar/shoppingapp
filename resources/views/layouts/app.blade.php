@@ -15,7 +15,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Themefisher Icon font -->
     <link rel="stylesheet" href="{{ URL::asset('/assets/frontend/plugins/themefisher-font/style.css') }}">
     <!-- bootstrap.min css -->
@@ -30,7 +30,8 @@
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="{{ URL::asset('/assets/frontend/css/style.css') }}">
     <link href="{{ URL::asset('/css/custom_styles.css') }}">
-
+    <link href="{{ URL::asset('/assets/frontend/css/jquery.toast.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.min.css">
     @stack('css')
 
 </head>
@@ -190,9 +191,9 @@
                                         class="tf-ion-ios-arrow-down"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="dashboard.html">Dashboard</a></li>
-                                    <li><a href="{{ route('orders') }}">Orders</a></li>
+                                    <li><a href="{{ route('orders') }}">My Orders</a></li>
                                     @if(auth()->user() && auth()->user()->hasRole('vendor'))
-                                    <li><a href="">Products</a></li>
+                                    <li><a href="">My Products</a></li>
                                     @endif
                                     <li><a href="profile-details.html">Profile Details</a></li>
                                 </ul>
@@ -308,5 +309,6 @@
         });
     </script>
     @stack('js')
+    @include('cart_script')
 </body>
 </html>

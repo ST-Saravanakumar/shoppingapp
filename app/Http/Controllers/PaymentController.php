@@ -26,8 +26,8 @@ class PaymentController extends Controller
                 // 'source' => $token,
                 "address" => ["city" => $request->user_city, "country" => $request->user_country, "line1" => $request->user_address, "line2" => "", "postal_code" => $request->user_post_code, "state" => ""]
             ];
-            $user->createAsStripeCustomer();
-            // $user->createOrGetStripeCustomer();
+            // $user->createAsStripeCustomer();
+            $user->createOrGetStripeCustomer();
             $user->updateStripeCustomer($user_address);
             $customer = $user->createOrGetStripeCustomer();
             $user->updateDefaultPaymentMethod($paymentMethod);

@@ -39,6 +39,13 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/orders', [App\Http\Controllers\UserController::class, 'orders'])->name('orders');
     Route::get('/order/summary/{id}', [App\Http\Controllers\UserController::class, 'order_summary'])->name('order.view');
 
+    Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [App\Http\Controllers\ProductController::class, 'create'])->name('products.create');
+    Route::post('/products/store', [App\Http\Controllers\ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/edit/{id}', [App\Http\Controllers\ProductController::class, 'edit'])->name('products.edit');
+    Route::post('/products/update', [App\Http\Controllers\ProductController::class, 'update'])->name('products.update');
+    Route::post('/products/delete', [App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete');
+
 });
 
 
@@ -81,7 +88,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
         Route::match(['GET', 'POST'], '/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings.index');
 
         Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders.index');
-        Route::get('/order/summary/{id}', [App\Http\Controllers\Admin\OrderController::class, 'summary'])->name('admin.orders.summary');
+        Route::get('/order/summary/{id}', [App\Http\Controllers\Admin\OrderController::class, 'summary'])->name('admin.order.summary');
 
     });
 });

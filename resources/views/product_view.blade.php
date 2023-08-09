@@ -1,10 +1,5 @@
 @extends('layouts.app')
 
-@push('css')
-<link href="{{ URL::asset('/assets/adminlte/plugins/toastr/toastr.min.css') }}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.min.css">
-@endpush
-
 @section('content')
 <section class="single-product">
     <div class="container">
@@ -64,22 +59,27 @@
                     <div class="product-quantity">
                         <span>Quantity:</span>
                         <div class="product-quantity-slider">
-                            <input id="product-quantity" type="text" value="0" name="product-quantity">
+                            <input id="product-quantity" type="text" value="{{ ($current_quantity) ? $current_quantity : 0 }}" name="product-quantity" data-id="{{ $product->id }}">
                         </div>
                     </div>
                     <div class="product-category">
                         <span>Category:</span>
                         <ul>
                             <li>
-                                <a href="product-single.html">{{ $product->category->title }}</a>
+                                <a href="javascript:void(0);">{{ $product->category->title }}</a>
                             </li>
                         </ul>
                     </div>
                     @if($product->stock_quantity > 0)
                     <a href="javascript:void(0);" class="btn btn-main mt-20 add_to_cart" data-id="{{ $product->id }}">Add To Cart</a>
+                        @if($product->stock_quantity <= 10)
+                        <p class="text text-danger mt-1">Only {{ $product->stock_quantity }} left</p>
+                        @endif
                     @else
                     <span class="label label-danger mt-20">Out of Stock</span>
                     @endif
+                    <p id="msg-success" class="alert alert-success text-center hide"></p>
+                    <p id="msg-error" class="alert alert-danger text-center hide"></p>
                 </div>
             </div>
         </div>
@@ -210,5 +210,100 @@
 @endsection
 
 @push('js')
-@include('cart_script')
+<script>
+    $(function() {
+
+        $('#product-quantity').TouchSpin({
+            min: 1
+        });
+
+        let logged_user = "{{ auth()->user() ? auth()->user()->id : 0 }}";
+
+        $(document).on('click', '.bootstrap-touchspin-up', function(event) {
+            let _this = $(this);
+            let qty = $('#product-quantity');
+            let params = {
+                'input'         : qty,
+                'product_id'    : qty.data('id'),
+                'change_type'   : 'increase',
+                'trigger'       : 'touchspin.downonce'
+            };
+            if(!checkLogin(logged_user, params)) {
+                return;
+            }
+            update_cart_item(params);
+        });
+        $(document).on('click', '.bootstrap-touchspin-down', function(event) {
+            let _this = $(this);
+            let qty = $('#product-quantity');
+            let params = {
+                'input'         : qty,
+                'product_id'    : qty.data('id'),
+                'change_type'   : 'decrease',
+                'trigger'       : 'touchspin.uponce'
+            };
+            if(!checkLogin(logged_user, params)) {
+                return;
+            }
+            update_cart_item(params);
+        });
+
+        function checkLogin(logged_user, params) {
+            if(Number(logged_user) == Number(0)) {
+                let error = $('#msg-error');
+                error.removeClass('hide');
+                error.text('Please login to continue...');
+                setTimeout(function() {
+                    error.addClass('hide');
+                    error.text('');
+                }, 3000);
+
+                $(params.input).trigger(params.trigger);
+                return;
+            }
+            return true;
+        }
+
+
+        function update_cart_item(params) {
+            $.ajax({
+                url: "{{ route('add_to_cart') }}",
+                type: 'post',
+                data: { 'user_id': logged_user, 'product_id': params.product_id, 'change_type': params.change_type, '_token': "{{ csrf_token() }}" },
+                success: function(resp) {
+                    
+                    if(resp.error) {
+                        let error = $('#msg-error');
+                        error.removeClass('hide');
+                        error.text(resp.error);
+                        setTimeout(function() {
+                            error.addClass('hide');
+                            error.text('');
+                        }, 3000);
+                        // $(params.qty).val(params.qty.val() - 1);
+                        $(params.input).trigger("touchspin.downonce");
+                    } else {
+                        let success = $('#msg-success');
+                        success.removeClass('hide');
+                        success.text('Cart item has been updated');
+                        setTimeout(function() {
+                            success.addClass('hide');
+                            success.text('');
+                        }, 3000);
+
+                        $('#cart-dropdown-html').html(resp.cart_html);
+                    }
+                },
+                error: function(err) {
+                    Swal.fire(
+                        'Failed!',
+                        'Something went wrong',
+                        'error'
+                    );
+                }
+            });
+        }
+
+    });
+</script>
 @endpush

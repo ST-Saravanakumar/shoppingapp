@@ -25,8 +25,14 @@ class CartController extends Controller
         $params = [
             'product_id' => $product->id,
             'user_id' => auth()->user() ? auth()->user()->id : $request->user_id,
-            'quantity' => $request->has('quantity') ? $request->quantity : 1,
+            'change_type' => ($request->has('change_type') && $request->change_type == 'decrease') ? 'decrease' : 'increase',
+            'quantity' => ($request->has('change_type') && $request->change_type == 'decrease') ? -1 : 1,
         ];
+        if($validation = $this->cart->validateQuantity($params)) {
+            if( !$validation['valid'] ) {
+                return response()->json($validation);
+            }
+        }
         $res = $this->cart->addOrUpdate($params, $product);
         return response()->json($res);
     }

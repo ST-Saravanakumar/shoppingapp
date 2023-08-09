@@ -35,7 +35,7 @@
 
                 <h3 class="text-center">{{ $page_title ?? 'My Account' }}</h3>
 
-                <div class="float-right"><a href="{{ route('orders') }}" class="btn btn-info">Back</a></div>
+                <div class="float-right"><a href="{{ route('orders') }}" class="btn btn-primary">Back</a></div>
 				<div class="dashboard-wrapper user-dashboard">
 					<div class="table-responsive">
                         @if( session()->has('success') )
@@ -58,8 +58,10 @@
 							<tbody>
                                 @forelse($order_items as $item)
                                 <tr>
-                                    <td>{{ $item['product_name'] }}</td>
-                                    <td><img src="{{ $item['product_image'] }}" class="img-responsive"></td>
+                                    <td>
+										<a href="{{ route('product.view', ['id' => $item['product_id']]) }}" class="text text-info" target="_blank">{{ $item['product_name'] }}</a>
+									</td>
+                                    <td><img src="{{ $item['product_image'] }}" class="img-responsive" alt="product-img" width="100" height="100"></td>
                                     <td>{{ $item['quantity'] }}</td>
                                     <td>{{ format_price($item['unit_price']) }}</td>
                                     <td>{{ format_price($item['sub_total']) }}</td>

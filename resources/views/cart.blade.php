@@ -37,6 +37,8 @@
                 <div class="col-md-10 col-md-offset-1">
                     <div class="block">
                         <div class="product-list">
+                            <p id="msg-success" class="alert alert-success text-center hide"></p>
+                            <p id="msg-error" class="alert alert-danger text-center hide"></p>
                             <table class="table table-responsive table-striped table-bordered">
                                 <thead>
                                     <tr>
@@ -56,17 +58,13 @@
                                             </div>
                                         </td>
                                         <td class="">{{ format_price($item['price']) }}</td>
-                                        <td class="input-group">
-                                            <div class="input-group-addon">
-                                                <span class="decrease-btn input-group-text">
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger decrease-qty" data-id="{{ $item['id'] }}" data-type="decrease">-</a>
-                                                </span>
-                                            </div>
-                                            <input type="text" name="quantity_{{ $item['id'] }}" id="quantity_{{ $item['id'] }}" class="form-control item-quantity" value="{{ $item['quantity'] }}" readonly>
-                                            <div class="input-group-addon">
-                                                <span class="increase-btn input-group-text">
-                                                    <a href="javascript:void(0);" class="btn btn-sm btn-success increase-qty" data-id="{{ $item['id'] }}" data-type="increase">+</a>
-                                                </span>
+                                        <td class="">
+                                            <div class="single-product-details">
+                                                <div class="product-quantity">
+                                                    <div class="product-quantity-slider">
+                                                        <input type="text" name="quantity_{{ $item['id'] }}" id="quantity_{{ $item['id'] }}" class="form-control item-quantity" value="{{ $item['quantity'] }}" data-id="{{ $item['id'] }}" readonly>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </td>
                                         <td class="">
@@ -95,6 +93,10 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.all.min.js"></script>
 <script>
     $(function() {
+
+        $('.item-quantity').TouchSpin({
+            min: 1
+        });
 
         let logged_user = "{{ auth()->user() ? auth()->user()->id : 0 }}";
 
@@ -139,58 +141,60 @@
         
         });
 
-        $(document).on('click', '.increase-qty, .decrease-qty', function(event) {
+        $(document).on('click', '.bootstrap-touchspin-up', function(event) {
             let _this = $(this);
-            let qty = _this.closest('.input-group').find('.item-quantity');
-
+            let qty = _this.closest('.single-product-details').find('input.item-quantity');
             let params = {
-                'product_id': _this.data('id'),
-                'change_type': _this.data('type')
+                'input'         : qty,
+                'product_id'    : qty.data('id'),
+                'change_type'   : 'increase'
             };
-
-            if(params.change_type == 'increase') {
-                qty.val(Number(qty.val()) + 1);
-            } else {
-                if(Number(qty.val()) - 1 < 1) {
-                    return false;
-                }
-                qty.val(Number(qty.val()) - 1);
-            }
-
             update_cart_item(params);
-        
+        });
+        $(document).on('click', '.bootstrap-touchspin-down', function(event) {
+            let _this = $(this);
+            let qty = _this.closest('.single-product-details').find('input.item-quantity');
+            let params = {
+                'input'         : qty,
+                'product_id'    : qty.data('id'),
+                'change_type'   : 'decrease'
+            };
+            update_cart_item(params);
         });
 
-        // $(document).on('change', 'input.item-quantity', function(event) {
-        //     let _this = $(this);
-        //     event.preventDefault();
-
-        //     if(_this.val() < 1) {
-        //         _this.val()
-        //         return;
-        //     }
-
-        //     let params = {
-        //         'product_id': _this.data('id'),
-        //         'change_type': 'change'
-        //     };
-
-        //     // update_cart_item(params);
-        
-        // });
 
         function update_cart_item(params) {
             $.ajax({
                 url: "{{ route('add_to_cart') }}",
                 type: 'post',
-                data: { 'user_id': logged_user, 'product_id': params.product_id, '_token': "{{ csrf_token() }}" },
+                data: { 'user_id': logged_user, 'product_id': params.product_id, 'change_type': params.change_type, '_token': "{{ csrf_token() }}" },
                 success: function(resp) {
-                    Swal.fire(
-                        'Updated!',
-                        'Cart item has been updated',
-                        'success'
-                    );
-                    $('#cart-dropdown-html').html(resp.cart_html);
+                    // Swal.fire(
+                    //     'Updated!',
+                    //     'Cart item has been updated',
+                    //     'success'
+                    // );
+                    if(resp.error) {
+                        let error = $('#msg-error');
+                        error.removeClass('hide');
+                        error.text(resp.error);
+                        setTimeout(function() {
+                            error.addClass('hide');
+                            error.text('');
+                        }, 3000);
+                        // $(params.qty).val(params.qty.val() - 1);
+                        $(params.input).trigger("touchspin.downonce");
+                    } else {
+                        let success = $('#msg-success');
+                        success.removeClass('hide');
+                        success.text('Cart item has been updated');
+                        setTimeout(function() {
+                            success.addClass('hide');
+                            success.text('');
+                        }, 3000);
+
+                        $('#cart-dropdown-html').html(resp.cart_html);
+                    }
                 },
                 error: function(err) {
                     Swal.fire(

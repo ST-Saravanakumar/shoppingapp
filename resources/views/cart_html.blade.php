@@ -23,5 +23,5 @@
 </div>
 <ul class="text-center cart-buttons">
     <li><a href="{{ route('cart') }}" class="btn btn-small">View Cart</a></li>
-    <li><a href="checkout.html" class="btn btn-small btn-solid-border">Checkout</a></li>
+    <li><a href="{{ route('checkout') }}" class="btn btn-small btn-solid-border">Checkout</a></li>
 </ul>

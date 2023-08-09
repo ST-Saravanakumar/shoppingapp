@@ -48,22 +48,49 @@
                 </div>
                 @endif
 
-                <div class="col-lg-12 col-12">
-                    
-                    <table class="table table-bordered yajra-datatable mt-3">
-                        <thead>
-                            <tr>
-                                <th>Order Id</th>
-                                <th>Total Price</th>
-                                <th>Status</th>
-                                <th>User</th>
-                                <th>Created At</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="col-lg-12 col-12 p-3">
+                    <div class="row p-2 mb-3">
+                        <div class="col-2"><strong class="text-info">Product Name</strong></div>
+                        <div class="col-2"><strong class="text-info">Product Image</strong></div>
+                        <div class="col-2"><strong class="text-info">Quantity</strong></div>
+                        <div class="col-2"><strong class="text-info">Unit Price</strong></div>
+                        <div class="col-2"><strong class="text-info">Subtotal</strong></div>
+                    </div>
+                    @foreach($order_items as $item)
+                    <div class="row p-2">
+                        <div class="col-2">
+                            <span>{{ $item['product_name'] }}</span>
+                        </div>
+                        <div class="col-2">
+                            <img src="{{ $item['product_image'] }}" alt="Product Image" class="img-responsive" width="100" height="100">
+                        </div>
+                        <div class="col-2">
+                            <span>{{ $item['quantity'] }}</span>
+                        </div>
+                        <div class="col-2">
+                            <span>{{ format_price($item['unit_price']) }}</span>
+                        </div>
+                        <div class="col-2">
+                            <span>{{ format_price($item['sub_total']) }}</span>
+                        </div>
+                    </div>
+                    @endforeach
+                    <div class="row p-2">
+                        <div class="col-6"></div>
+                        <div class="col-2"><strong class="text-info">Grand Total</strong></div>
+                        <div class="col-2"><strong>{{ format_price($order->grand_total) }}</strong></div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-6"></div>
+                        <div class="col-2"><strong class="text-info">Payment Status</strong></div>
+                        <div class="col-2"><span class="badge badge-{{ ($order->status == 'paid') ? 'success' : 'info' }}">{{ ucfirst($order->status) }}</span></div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-6"></div>
+                        <div class="col-2"><strong class="text-info">Ordered By</strong></div>
+                        <div class="col-2"><strong>{{ ($order->user) ? ucfirst($order->user->first_name) : 'Deleted User' }}</strong></div>
+                    </div>
+
                 </div>
                 
             </div>
