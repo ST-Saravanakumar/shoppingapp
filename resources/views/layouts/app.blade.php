@@ -164,8 +164,8 @@
                                                 <li role="separator" class="divider"></li>
                                                 <li><a href="checkout.html">Checkout</a></li>
                                                 <li><a href="cart.html">Cart</a></li>
-                                                <li><a href="pricing.html">Pricing</a></li>
-                                                <li><a href="confirmation.html">Confirmation</a></li>
+                                                <!-- <li><a href="pricing.html">Pricing</a></li>
+                                                <li><a href="confirmation.html">Confirmation</a></li> -->
 
                                             </ul>
                                         </div>
@@ -175,7 +175,7 @@
                                             <ul>
                                                 <li class="dropdown-header">Layout</li>
                                                 <li role="separator" class="divider"></li>
-                                                <li><a href="product-single.html">Product Details</a></li>
+                                                <!-- <li><a href="product-single.html">Product Details</a></li> -->
                                                 <li><a href="{{ route('products.search') }}">Shop With Sidebar</a></li>
                                                 @if(auth()->user() && auth()->user()->hasRole('vendor'))
                                                 <li><a href="">Add Product</a></li>
@@ -195,7 +195,7 @@
                                     role="button" aria-haspopup="true" aria-expanded="false">Profile <span
                                         class="tf-ion-ios-arrow-down"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="dashboard.html">Dashboard</a></li>
+                                    <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                                     <li><a href="{{ route('orders') }}">My Orders</a></li>
                                     @if(auth()->user() && auth()->user()->hasRole('vendor'))
                                     <li><a href="{{ route('products.index') }}">My Products</a></li>
@@ -264,16 +264,13 @@
                         </ul>
                         <ul class="footer-menu text-uppercase">
                             <li>
-                                <a href="contact.html">CONTACT</a>
+                                <a href="javascript:void(0);">CONTACT</a>
                             </li>
                             <li>
-                                <a href="shop.html">SHOP</a>
+                                <a href="{{ route('products.search') }}">SHOP</a>
                             </li>
                             <li>
-                                <a href="pricing.html">Pricing</a>
-                            </li>
-                            <li>
-                                <a href="contact.html">PRIVACY POLICY</a>
+                                <a href="javascript:void(0);">PRIVACY POLICY</a>
                             </li>
                         </ul>
                         <p class="copyright-text">Copyright &copy;{{ date('Y') }}, Designed &amp; Developed by <a href="{{ url('/') }}">{{ env('APP_NAME') }}</a></p>

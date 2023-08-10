@@ -3,35 +3,35 @@
 @section('content')
 
 <div class="hero-slider">
-    <div class="slider-item th-fullpage hero-area" style="background-image: url({{ URL::asset('/assets/frontend/images/slider/slider-1.jpg') }});">
+    <div class="slider-item th-fullpage hero-area" style="background-image: url({{ URL::asset('/assets/frontend/images/banner/banner1.jpeg') }});">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 text-center">
                     <p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">PRODUCTS</p>
                     <h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5">The beauty of nature <br> is hidden in details. </h1>
-                    <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn" href="shop.html">Shop Now</a>
+                    <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn" href="{{ route('products.search') }}">Shop Now</a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="slider-item th-fullpage hero-area" style="background-image: url({{ URL::asset('/assets/frontend/images/slider/slider-3.jpg') }});">
+    <div class="slider-item th-fullpage hero-area" style="background-image: url({{ URL::asset('/assets/frontend/images/banner/banner2.jpeg') }});">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 text-left">
                     <p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">PRODUCTS</p>
                     <h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5">The beauty of nature <br> is hidden in details. </h1>
-                    <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn" href="shop.html">Shop Now</a>
+                    <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn" href="{{ route('products.search') }}">Shop Now</a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="slider-item th-fullpage hero-area" style="background-image: url({{ URL::asset('/assets/frontend/images/slider/slider-2.jpg') }});">
+    <div class="slider-item th-fullpage hero-area" style="background-image: url({{ URL::asset('/assets/frontend/images/banner/banner3.jpeg') }});">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 text-right">
                     <p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">PRODUCTS</p>
                     <h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5">The beauty of nature <br> is hidden in details. </h1>
-                    <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn" href="shop.html">Shop Now</a>
+                    <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn" href="{{ route('products.search') }}">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -329,8 +329,11 @@
                 </div>
 				<!-- Contact Form -->
 				<div class="contact-form col-md-6 " >
-					<form id="contact-form" method="post" action="" role="form">
-					
+					<form id="contact-form" method="post" action="{{ route('contact_form.submit') }}" role="form">
+						@csrf
+						<div class="form-group">
+							<p id="msg" class="alert hide"></p>
+						</div>
 						<div class="form-group">
 							<input type="text" placeholder="Your Name" class="form-control" name="name" id="name">
 						</div>
@@ -356,7 +359,7 @@
 						</div>
 						
 						<div id="cf-submit">
-							<input type="button" id="contact-submit" class="btn btn-transparent" value="Submit">
+							<button type="submit" id="contact-submit" class="btn btn-transparent">Submit</button>
 						</div>						
 						
 					</form>
@@ -408,3 +411,45 @@
 </section>
 
 @endsection
+
+@push('js')
+<script src="{{ URL::asset('/assets/adminlte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+<script>
+	$(function() {
+		$('#contact-form').validate({
+			errorElement: 'span',
+            errorClass: 'error-field',
+            rules: {
+                'name': { required: true, minlength: 2, },
+                'email': { required: true, email: true },
+				'subject': { required: true, minlength: 2 },
+				'message': { required: true, minlength: 2 }
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: "{{ route('contact_form.submit') }}",
+                    type: "post",
+                    data: $(form).serializeArray(),
+					beforeSend: function() {
+						$('#contact-submit').text('Please wait...');
+						$('#contact-submit').attr('disabled', 'disabled');
+					},
+                    success: function(resp) {
+						$('#contact-submit').text('Submit');
+						$('#contact-submit').removeAttr('disabled');
+                        if(resp.status_code == 200) {
+                            $('#msg').text(resp.message);
+                            $('#msg').addClass('alert-success').removeClass('hide');
+                        }
+                    },
+                    error: function(err) {
+						$('#contact-submit').text('Submit');
+						$('#contact-submit').removeAttr('disabled');
+                        alert('Something went wrong');
+                    }
+                });
+            }
+		});
+	});
+</script>
+@endpush

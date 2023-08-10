@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/products/delete', [App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete');
 
     Route::post('/write_review', [App\Http\Controllers\UserController::class, 'write_review'])->name('write_review');
+    Route::post('/contact-form-submit', [App\Http\Controllers\HomeController::class, 'contact_form_submit'])->name('contact_form.submit');
 
 });
 
