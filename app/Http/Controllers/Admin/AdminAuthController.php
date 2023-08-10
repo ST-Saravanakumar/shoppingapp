@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Order;
 
 class AdminAuthController extends Controller
 {
@@ -43,6 +44,35 @@ class AdminAuthController extends Controller
         $data['users_count'] = User::where('role', 'user')->count();
         $data['vendors_count'] = User::where('role', 'vendor')->count();
         $data['products_count'] = Product::count();
+        $data['purchased_total_cost'] = Order::sum('grand_total');
+
+        $months = [
+            date('M', strtotime('-5 months')),
+            date('M', strtotime('-4 months')),
+            date('M', strtotime('-3 months')),
+            date('M', strtotime('-2 months')),
+            date('M', strtotime('-1 month')),
+            date('M'),
+        ];
+        $data['months'] = $months;
+
+        $data['last_year_sales'] = [];
+        for($i = 0; $i < count($months); $i++) {
+            $order = Order::select('grand_total')->whereRaw("YEAR(DATE(created_at)) = '". date('Y', strtotime('-1 year')) ."' and MONTH(DATE(created_at)) = '". date('m', strtotime($months[$i])) ."'")->get();
+            // dd($months, $order);
+            $data['last_year_sales'][] = ($order) ? $order->sum('grand_total') : 0;
+        }
+        $data['current_year_sales'] = [];
+        for($i = 0; $i < count($months); $i++) {
+            $order = Order::select('grand_total')->whereRaw("YEAR(DATE(created_at)) = '". date('Y') ."' and MONTH(DATE(created_at)) = '". date('m', strtotime($months[$i])) ."'")->get();
+            // dd($months, $order);
+            $data['current_year_sales'][] = ($order) ? $order->sum('grand_total') : 0;
+        }
+
+        // echo implode(', ', $data['months']); exit;
+
+        // dd($data['months'], $data['last_year_sales'], $data['current_year_sales']);
+
         return view('adminlte.dashboard', $data);
     }
 
