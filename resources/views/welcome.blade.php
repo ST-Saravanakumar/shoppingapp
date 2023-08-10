@@ -43,7 +43,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="title text-center">
-				<h2>Trendy Products</h2>
+				<h2>Popular Products</h2>
 			</div>
 		</div>
 		<div class="row">
@@ -52,7 +52,7 @@
 				<div class="product-item">
 					<div class="product-thumb">
 						<span class="bage">Sale</span>
-						<img class="img-responsive" src="{{ $product->getFirstMediaUrl('product_images') }}" alt="product-img">
+						<img class="img-responsive product-img" src="{{ $product->getFirstMediaUrl('product_images') }}" alt="product-img">
 						<div class="preview-meta">
 							<ul>
 								<li>

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $data['trendy_products'] = \App\Models\Product::where('status', 'active')->take(9)->get();
+    $data['trendy_products'] = \App\Models\Product::withCount('order_items')->where('status', 'active')->orderBy('order_items_count', 'desc')->take(9)->get();
     return view('welcome', $data);
 })->name('root');
 
