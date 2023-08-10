@@ -29,6 +29,7 @@ Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'postLog
 
 Route::group(['middleware' => 'auth'], function() {
 
+    Route::get('/dashboard', [App\Http\Controllers\UserController::class, 'dashboard'])->name('dashboard');
     Route::post('/add_to_cart', [App\Http\Controllers\CartController::class, 'add'])->name('add_to_cart');
     // Route::post('/update_cart_item', [App\Http\Controllers\CartController::class, 'update'])->name('update_cart_item');
     Route::post('/remove_cart_item', [App\Http\Controllers\CartController::class, 'remove'])->name('remove_cart_item');
@@ -45,6 +46,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/products/edit/{id}', [App\Http\Controllers\ProductController::class, 'edit'])->name('products.edit');
     Route::post('/products/update', [App\Http\Controllers\ProductController::class, 'update'])->name('products.update');
     Route::post('/products/delete', [App\Http\Controllers\ProductController::class, 'delete'])->name('products.delete');
+
+    Route::post('/write_review', [App\Http\Controllers\UserController::class, 'write_review'])->name('write_review');
 
 });
 
@@ -84,6 +87,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
         Route::get('/products/edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('admin.products.edit');
         Route::post('/products/update', [App\Http\Controllers\Admin\ProductController::class, 'update_product'])->name('admin.products.update');
         Route::post('/products/delete', [App\Http\Controllers\Admin\ProductController::class, 'delete'])->name('admin.products.delete');
+
+        Route::get('/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.reviews.index');
+        Route::get('/reviews/create', [App\Http\Controllers\Admin\ReviewController::class, 'create'])->name('admin.reviews.create');
+        Route::post('/reviews/store', [App\Http\Controllers\Admin\ReviewController::class, 'store'])->name('admin.reviews.store');
+        Route::get('/reviews/edit/{id}', [App\Http\Controllers\Admin\ReviewController::class, 'edit'])->name('admin.reviews.edit');
+        Route::post('/reviews/update', [App\Http\Controllers\Admin\ReviewController::class, 'update'])->name('admin.reviews.update');
+        Route::post('/reviews/delete', [App\Http\Controllers\Admin\ReviewController::class, 'delete'])->name('admin.reviews.delete');
 
         Route::match(['GET', 'POST'], '/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings.index');
 

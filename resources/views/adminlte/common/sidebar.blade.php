@@ -70,6 +70,14 @@
                     </a>
                 </li>
 
+                <li class="nav-item {{ url()->current() == route('admin.reviews.index') ? 'menu-open' : '' }}">
+                    <a href="{{ route('admin.reviews.index') }}" class="nav-link {{ url()->current() == route('admin.reviews.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>Manage Reviews</span>
+                        </p>
+                    </a>
+                </li>
+
                 <li class="nav-item {{ url()->current() == route('admin.settings.index') ? 'menu-open' : '' }}">
                     <a href="{{ route('admin.settings.index') }}" class="nav-link {{ url()->current() == route('admin.settings.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>

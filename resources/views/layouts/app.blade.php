@@ -32,6 +32,11 @@
     <link href="{{ URL::asset('/css/custom_styles.css') }}">
     <link href="{{ URL::asset('/assets/frontend/css/jquery.toast.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.min.css">
+    <style>
+        span.error-field {
+            color: red !important;
+        }
+    </style>
     @stack('css')
 
 </head>
@@ -193,7 +198,7 @@
                                     <li><a href="dashboard.html">Dashboard</a></li>
                                     <li><a href="{{ route('orders') }}">My Orders</a></li>
                                     @if(auth()->user() && auth()->user()->hasRole('vendor'))
-                                    <li><a href="">My Products</a></li>
+                                    <li><a href="{{ route('products.index') }}">My Products</a></li>
                                     @endif
                                     <li><a href="profile-details.html">Profile Details</a></li>
                                 </ul>

@@ -31,5 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
         $site_logo = Setting::where('name', 'site_logo')->first();
         view()->share('site_logo', $site_logo->getFirstMediaUrl('settings'));
+
+        view()->share('default_img_url', url()->asset('/assets/frontend/images/img_not_available.png'));
     }
 }

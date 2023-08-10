@@ -9,8 +9,8 @@ if(!function_exists('format_price')) {
 }
 
 if(!function_exists('format_date')) {
-    function format_date($value = 0) {
-        return date('Y-m-d H:i:s', strtotime($value));
+    function format_date($value = 0, $format = 'Y-m-d H:i:s') {
+        return date($format, strtotime($value));
     }
 }
 

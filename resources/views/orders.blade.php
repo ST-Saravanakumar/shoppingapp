@@ -25,10 +25,10 @@
 		<div class="row">
 			<div class="col-md-12">
 				<ul class="list-inline dashboard-menu text-center">
-					<li><a href="dashboard.html">Dashboard</a></li>
+					<li><a href="{{ route('dashboard') }}">Dashboard</a></li>
 					<li><a class="active">My Orders</a></li>
                     @if(auth()->user()->hasRole('vendor'))
-                    <li><a href="profile-details.html">My Products</a></li>
+                    <li><a href="{{ route('products.index') }}">My Products</a></li>
                     @endif
 					<li><a href="profile-details.html">Profile Details</a></li>
 				</ul>
@@ -50,7 +50,7 @@
 									<th>Date</th>
 									<th>Total Price</th>
 									<th>Status</th>
-									<th></th>
+									<th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -63,7 +63,7 @@
                                         <span class="label label-{{ ($order->status=='paid') ? 'success' : 'default' }}">{{ ucfirst($order->status) }}</span>
                                     </td>
                                     <td>
-                                        <a href="{{ route('order.view', ['id' => $order->id]) }}" class="btn btn-default">View</a>
+                                        <a href="{{ route('order.view', ['id' => $order->id]) }}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i> View</a>
                                     </td>
                                 </tr>
                                 @empty
@@ -87,6 +87,10 @@
         let table = new DataTable('table.table', {
             responsive: true
         });
+
+		setTimeout(function() {
+            $('.alert').hide('slow');
+        }, 3000);
     });
 </script>
 @endpush

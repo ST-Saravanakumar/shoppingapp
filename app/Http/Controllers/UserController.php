@@ -3,16 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\Repositories\OrderRepository;
 use Cart;
 use App\Models\Product;
+use App\Models\Review;
 
 class UserController extends Controller
 {
     //
     public function __construct(OrderRepository $orderRepository) {
         $this->orderRepository = $orderRepository;
+    }
+
+    public function dashboard(Request $request) {
+        $data['page_title'] = 'Dashboard';
+        return view('dashboard', $data);
     }
 
     public function orders(Request $request) {
@@ -48,5 +55,29 @@ class UserController extends Controller
         }
 
         return view('order_view', $data);
+    }
+
+    public function write_review(Request $request) {
+        if($request->ajax()) {
+            $review = Review::firstOrNew(
+                [ 'product_id' => $request->product_id ],
+                [ 'user_id' => auth()->user()->id ]
+            );
+            
+            $review->product_id = $request->product_id;
+            $review->user_id = auth()->user()->id;
+            $review->review = $request->review;
+            $review->rating = $request->rating;
+            $review->save();
+
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'Review updated successfully',
+                'review' => $review
+            ]);
+        } else {
+            session()->flash('success', 'Review updated successfully');
+            return redirect()->route('orders');
+        }
     }
 }

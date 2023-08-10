@@ -66,7 +66,7 @@ class ProductController extends Controller
                     return Str::of($row->description)->words(50, '...');
                 })
                 ->editColumn('price', function ($row) {
-                    return $row->price ? number_format($row->price, 2) : "0.00";
+                    return $row->price ? format_price($row->price) : "0.00";
                 })
                 ->editColumn('category.title', function ($row) {
                     return $row->category->title ? ucfirst($row->category->title) : "";
@@ -76,9 +76,9 @@ class ProductController extends Controller
                 })
                 ->editColumn('status', function ($row) {
                     if($row->status && $row->status == 'active') {
-                        return '<span class="badge badge-success">'.ucfirst($row->status).'</span>';
+                        return '<span class="label label-success">'.ucfirst($row->status).'</span>';
                     } else {
-                        return '<span class="badge badge-danger">Inactive</span>';
+                        return '<span class="label label-danger">Inactive</span>';
                     }
                 })
                 ->editColumn('created_at', function ($row) {
@@ -91,7 +91,7 @@ class ProductController extends Controller
                 })
                 ->addColumn('action', function($row){
                     $edit_url = route('admin.products.edit', ['id' => $row->id]);
-                    $actionBtn = '<a href="'. $edit_url .'" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm btn-delete" data-id="'.$row->id.'" data-module="products">Delete</a>';
+                    $actionBtn = '<a href="'. $edit_url .'" class="edit btn btn-success btn-sm"><i class="fa fa-edit"></i></a>&nbsp;<a href="javascript:void(0)" class="delete btn btn-danger btn-sm btn-delete" data-id="'.$row->id.'" data-module="products"><i class="fa fa-trash"></i></a>';
                     return $actionBtn;
                 })
                 ->rawColumns(['status', 'action'])

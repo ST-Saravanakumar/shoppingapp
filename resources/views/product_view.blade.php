@@ -91,8 +91,13 @@
                             <a data-toggle="tab" href="#details" aria-expanded="true">Details</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" href="#reviews" aria-expanded="false">Reviews (3)</a>
+                            <a data-toggle="tab" href="#reviews" aria-expanded="false">Reviews ({{ $reviews->count() }})</a>
                         </li>
+                        @if( $order )
+                        <li class="">
+                            <a data-toggle="tab" href="#write_review" aria-expanded="false">Write a Review</a>
+                        </li>
+                        @endif
                     </ul>
                     <div class="tab-content patternbg">
                         <div id="details" class="tab-pane fade active in">
@@ -104,54 +109,57 @@
                         <div id="reviews" class="tab-pane fade">
                             <div class="post-comments">
                                 <ul class="media-list comments-list m-bot-50 clearlist">
-                                    <!-- Comment Item start-->
+
+                                    @forelse($reviews as $review)
                                     <li class="media">
-                                        <a class="pull-left" href="#!">
-                                            <img class="media-object comment-avatar" src="{{ URL::asset('/assets/frontend/images/blog/avater-1.jpg') }}" alt="" width="50" height="50" />
+                                        <a class="pull-left" href="javascript:void(0);">
+                                            <img class="media-object comment-avatar" src="{{ $default_img_url }}" alt="user-img" width="50" height="50">
                                         </a>
                                         <div class="media-body">
                                             <div class="comment-info">
                                                 <h4 class="comment-author">
-                                                    <a href="#!">Jonathon Andrew</a>
+                                                    <a href="javascript:void(0);">{{ ucfirst($review->user->first_name) }}</a>
                                                 </h4>
-                                                <time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
+                                                <time>{{ format_date($review->created_at, 'M d, Y, h:i A') }}</time>
                                             </div>
-                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod laborum minima, reprehenderit laboriosam officiis praesentium? Impedit minus provident assumenda quae. </p>
+                                            <p>{{ $review->review }}</p>
                                         </div>
                                     </li>
-                                    <!-- End Comment Item -->
-                                    <!-- Comment Item start-->
+                                    @empty
                                     <li class="media">
-                                        <a class="pull-left" href="#!">
-                                            <img class="media-object comment-avatar" src="{{ URL::asset('/assets/frontend/images/blog/avater-4.jpg') }}" alt="" width="50" height="50" />
-                                        </a>
-                                        <div class="media-body">
-                                            <div class="comment-info">
-                                                <div class="comment-author">
-                                                    <a href="#!">Jonathon Andrew</a>
-                                                </div>
-                                                <time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
-                                            </div>
-                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni natus, nostrum iste non delectus atque ab a accusantium optio, dolor! </p>
-                                        </div>
+                                        <p class="alert alert-danger">No reviews yet</p>
                                     </li>
-                                    <!-- End Comment Item -->
-                                    <!-- Comment Item start-->
-                                    <li class="media">
-                                        <a class="pull-left" href="#!">
-                                            <img class="media-object comment-avatar" src="{{ URL::asset('/assets/frontend/images/blog/avater-1.jpg') }}" alt="" width="50" height="50">
-                                        </a>
-                                        <div class="media-body">
-                                            <div class="comment-info">
-                                                <div class="comment-author">
-                                                    <a href="#!">Jonathon Andrew</a>
-                                                </div>
-                                                <time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
-                                            </div>
-                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend. </p>
-                                        </div>
-                                    </li>
+                                    @endforelse
+                                    
                                 </ul>
+                            </div>
+                        </div>
+
+                        <div id="write_review" class="tab-pane fade">
+                            <div class="row">
+                                <form action="{{ route('write_review') }}" method="post" id="review-form">
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    @csrf
+                                    <div class="col-md-12">
+                                        <p id="review_msg" class="alert"></p>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label for="review">Review <span class="text-danger">*</span></label>
+                                        <textarea name="review" id="review" class="form-control" cols="30" rows="5" placeholder="Write a review...">{{ ($review) ? $review->review : '' }}</textarea>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label for="rating">Rating <span class="text-danger">*</span></label>
+                                        <select name="rating" id="rating" class="form-control">
+                                            <option value="">Select</option>
+                                            @for($i = 1; $i < 6; $i++)
+                                            <option value="{{ $i }}" @if($review && $review->rating == $i) selected @endif>{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <button type="submit" name="write_review" id="write_review" class="btn btn-main mt-20 write_review">Publish</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
 
@@ -210,6 +218,7 @@
 @endsection
 
 @push('js')
+<script src="{{ URL::asset('/assets/adminlte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
 <script>
     $(function() {
 
@@ -303,6 +312,31 @@
                 }
             });
         }
+
+        $('#review-form').validate({
+            errorElement: 'span',
+            errorClass: 'error-field',
+            rules: {
+                'review': { required: true, minlength: 10, },
+                'rating': { required: true, digits: true }
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: "{{ route('write_review') }}",
+                    type: "post",
+                    data: $(form).serializeArray(),
+                    success: function(resp) {
+                        if(resp.status_code == 200) {
+                            $('#review_msg').text(resp.message);
+                            $('#review_msg').addClass('alert-success');
+                        }
+                    },
+                    error: function(err) {
+                        alert('Something went wrong');
+                    }
+                });
+            }
+        });
 
     });
 </script>
