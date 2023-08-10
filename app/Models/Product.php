@@ -36,6 +36,10 @@ class Product extends Model implements HasMedia
         return $this->hasMany(OrderItem::class);
     }
 
+    public function reviews() {
+        return $this->hasMany(Review::class);
+    }
+
     public function scopeOnlyActive($query) {
         return $query->where('status', 'active');
     }

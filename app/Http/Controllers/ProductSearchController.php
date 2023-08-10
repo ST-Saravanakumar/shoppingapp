@@ -21,7 +21,7 @@ class ProductSearchController extends Controller
         $data['page_title'] = 'Products';
         $data['categories'] = Category::onlyActive()->get();
 
-        $products = Product::query();
+        $products = Product::query()->withCount('reviews');
 
         if($request->category) {
             $products = $products->where('category_id', $request->category);
@@ -46,8 +46,8 @@ class ProductSearchController extends Controller
                 $column = 'created_by';
                 $order = 'desc';
             } else {
-                $column = 'price';
-                $order = 'asc';
+                $column = 'reviews_count';
+                $order = 'desc';
             }
             $products = $products->orderBy($column, $order);
         }
