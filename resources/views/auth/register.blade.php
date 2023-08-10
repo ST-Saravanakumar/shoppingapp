@@ -77,6 +77,16 @@
                     <p>
                         <a href="{{ route('password.request') }}"> Forgot your password?</a>
                     </p>
+
+					<hr>
+                    <p>Or Signup with</p>
+                    <a class="google-icon" href="{{ route('login.social', [ 'driver' => 'google' ]) }}">
+                        <img src="{{ URL::asset('/assets/frontend/images/social/google-icon.png') }}" alt="google-icon" width="100" height="50">
+                    </a>
+                    <a class="facebook-icon" href="{{ route('login.social', [ 'driver' => 'facebook' ]) }}">
+                        <img src="{{ URL::asset('/assets/frontend/images/social/facebook-icon.jpeg') }}" alt="facebook-icon" width="50" height="50">
+                    </a>
+
                 </div>
             </div>
         </div>
