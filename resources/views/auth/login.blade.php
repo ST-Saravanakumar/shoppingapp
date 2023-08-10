@@ -47,6 +47,15 @@
                     </form>
                     <p class="mt-20">New in this site? <a href="{{ route('register') }}"> Create New Account</a></p>
                     <p class="mt-20">Forgot your password? <a href="{{ route('password.request') }}"> Reset Password</a></p>
+
+                    <hr>
+                    <p>Or Login with</p>
+                    <a class="google-icon" href="{{ route('login.social', [ 'driver' => 'google' ]) }}">
+                        <img src="{{ URL::asset('/assets/frontend/images/social/google-icon.png') }}" alt="google-icon" width="100" height="50">
+                    </a>
+                    <a class="facebook-icon" href="{{ route('login.social', [ 'driver' => 'facebook' ]) }}">
+                        <img src="{{ URL::asset('/assets/frontend/images/social/facebook-icon.jpeg') }}" alt="facebook-icon" width="50" height="50">
+                    </a>
                 </div>
             </div>
         </div>

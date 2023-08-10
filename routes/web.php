@@ -20,6 +20,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/auth/{driver}', [App\Http\Controllers\Auth\LoginController::class, 'redirectToProvider'])->name('login.social');
+Route::get('callback/{google}', [App\Http\Controllers\Auth\LoginController::class, 'handleProviderCallback']);
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/products/search', [App\Http\Controllers\ProductSearchController::class, 'index'])->name('products.search');
 Route::get('/product/view/{id}', [App\Http\Controllers\ProductSearchController::class, 'view'])->name('product.view');

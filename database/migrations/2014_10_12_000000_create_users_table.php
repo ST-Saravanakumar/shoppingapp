@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'user', 'vendor'])->default('user');
             $table->rememberToken();
+            $table->string('provider_id', 255)->nullable();
+            $table->string('provider_name', 10)->nullable();
             $table->timestamps();
         });
     }

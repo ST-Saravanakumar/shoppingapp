@@ -49,7 +49,7 @@
 							<img class="media-object user-img" src="{{ $default_img_url }}" alt="Image">
 						</div>
 						<div class="media-body">
-                            <p><h2 class="media-heading">Welcome, <span class="text-info">{{ ucfirst(auth()->user()->first_name .' '. auth()->user()->last_name) }}</span></h2></p>
+                            <p><h2 class="media-heading">Welcome, <span class="text-info">{{ ucfirst(auth()->user()->first_name) }}</span></h2></p>
 							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde, iure, est. Sit mollitia est maxime! Eos
 								cupiditate tempore, tempora omnis. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, nihil. </p>
 						</div>
