@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Auth;
 use DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -20,6 +21,14 @@ class ProductController extends Controller
 
     public function __construct() {
         $this->img_coll_name = 'product_images';
+        $this->middleware(function ($request, $next) {
+            if( Auth::user()->hasRole('user') ) {
+                session()->flash('error', "You don't have access to this page");
+                return redirect()->route('dashboard');
+            }
+
+            return $next($request);
+        });
     }
 
     public function model() {
