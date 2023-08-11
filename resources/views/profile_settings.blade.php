@@ -78,6 +78,9 @@
                                 <div class="form-group col-md-12 row">
                                     <div class="col-md-12">
                                         <label>Avatar <span class="text-danger">*</span></label>
+                                        <div class="imp-responsive">
+                                            <img src="{{ auth()->user()->getFirstMediaUrl('avatar') }}" width="100" height="100">
+                                        </div>
                                         <div class="dz-default dz-message"><button class="dz-button" type="button">Drop file here to upload</button></div>
                                         <div id="dropzone-previews"></div>
                                     </div>
@@ -110,6 +113,7 @@
         uploadMultiple: false,
         parallelUploads: 1,
         maxFiles: 1,
+        paramName: "avatar",
 
         init: function() {
             var myDropzone = this;
