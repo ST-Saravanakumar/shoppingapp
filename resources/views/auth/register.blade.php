@@ -80,12 +80,20 @@
 
 					<hr>
                     <p>Or Signup with</p>
-                    <a class="google-icon" href="{{ route('login.social', [ 'driver' => 'google' ]) }}">
-                        <img src="{{ URL::asset('/assets/frontend/images/social/google-icon.png') }}" alt="google-icon" width="100" height="50">
-                    </a>
-                    <a class="facebook-icon" href="{{ route('login.social', [ 'driver' => 'facebook' ]) }}">
-                        <img src="{{ URL::asset('/assets/frontend/images/social/facebook-icon.jpeg') }}" alt="facebook-icon" width="50" height="50">
-                    </a>
+                    <div class="social-media-icons">
+                        <ul>
+                            <li>
+                                <a class="google-icon googleplus" href="{{ route('login.social', [ 'driver' => 'google' ]) }}">
+                                    <i class="tf-ion-social-googleplus"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="facebook-icon facebook" href="{{ route('login.social', [ 'driver' => 'facebook' ]) }}">
+                                    <i class="tf-ion-social-facebook"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
                 </div>
             </div>

@@ -31,6 +31,10 @@ Auth::routes();
 
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'postLogin'])->name('login.post');
 
+Route::get('/privacy-policy', function() {
+    return view('privacy_policy');
+})->name('privacy_policy');
+
 Route::group(['middleware' => 'auth'], function() {
 
     Route::get('/dashboard', [App\Http\Controllers\UserController::class, 'dashboard'])->name('dashboard');

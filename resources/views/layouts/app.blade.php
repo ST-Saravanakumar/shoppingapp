@@ -36,6 +36,9 @@
         span.error-field {
             color: red !important;
         }
+        .social-media-icons ul li a {
+            color: #fff !important;
+        }
     </style>
     @stack('css')
 
@@ -270,7 +273,7 @@
                                 <a href="{{ route('products.search') }}">SHOP</a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);">PRIVACY POLICY</a>
+                                <a href="{{ route('privacy_policy') }}">PRIVACY POLICY</a>
                             </li>
                         </ul>
                         <p class="copyright-text">Copyright &copy;{{ date('Y') }}, Designed &amp; Developed by <a href="{{ url('/') }}">{{ env('APP_NAME') }}</a></p>
