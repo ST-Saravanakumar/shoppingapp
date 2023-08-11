@@ -162,8 +162,8 @@
                                             <ul>
                                                 <li class="dropdown-header">Pages</li>
                                                 <li role="separator" class="divider"></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                                <li><a href="cart.html">Cart</a></li>
+                                                <li><a href="{{ route('checkout') }}">Checkout</a></li>
+                                                <li><a href="{{ route('cart') }}">Cart</a></li>
                                                 <!-- <li><a href="pricing.html">Pricing</a></li>
                                                 <li><a href="confirmation.html">Confirmation</a></li> -->
 

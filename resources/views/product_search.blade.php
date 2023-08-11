@@ -41,6 +41,7 @@
                     <div class="widget">
                         <h4 class="widget-title">Sort By</h4>
                         <select name="sort_by" id="sort_by" class="form-control">
+                            <option value="">Select</option>
                             <option value="price_low_to_high" @if(request()->has('sort_by') && request()->sort_by == 'price_low_to_high') selected @endif>Price Low to High</option>
                             <option value="price_high_to_low" @if(request()->has('sort_by') && request()->sort_by == 'price_high_to_low') selected @endif>Price High to Low</option>
                             <option value="recently_created" @if(request()->has('sort_by') && request()->sort_by == 'recently_created') selected @endif>Recently Created</option>
@@ -51,7 +52,7 @@
                     <hr>
                     <p>Filter By</p>
                     <div class="widget product-category">
-                        <h4 class="widget-title">Categories</h4>
+                        <h4 class="widget-title">Category</h4>
                         <select name="category" id="category" class="form-control">
                             <option value="">Select</option>
                             @foreach($categories as $key => $value)
