@@ -80,4 +80,31 @@ class UserController extends Controller
             return redirect()->route('orders');
         }
     }
+
+    public function profile_settings(Request $request) {
+        $data['page_title'] = 'Profile Settings';
+        $data['data'] = auth()->user();
+        return view('profile_settings', $data);
+    }
+
+    public function profile_settings_post(Request $request) {
+        $user = auth()->user();
+
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->password = $request->password;
+        $user->save();
+
+        if($request->hasFile('avatar')) {
+            $user->addMediaFromRequest('avatar')->toMediaCollection('avatar');
+        }
+
+        if($request->ajax()) {
+            return response()->json([
+                'status_code' => 200,
+                'status_message' => 'success',
+            ]);
+        }
+        return redirect()->route('dashboard')->with('error', 'Failed to update profile settings');
+    }
 }

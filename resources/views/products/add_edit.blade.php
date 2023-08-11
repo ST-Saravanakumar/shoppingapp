@@ -34,12 +34,12 @@
 		<div class="row">
 			<div class="col-md-12">
 				<ul class="list-inline dashboard-menu text-center">
-					<li><a href="dashboard.html">Dashboard</a></li>
+					<li><a href="{{ route('dashboard') }}">Dashboard</a></li>
 					<li><a href="{{ route('orders') }}">My Orders</a></li>
                     @if(auth()->user()->hasRole('vendor'))
                     <li><a class="active">My Products</a></li>
                     @endif
-					<li><a href="profile-details.html">Profile Details</a></li>
+					<li><a href="{{ route('profile_settings') }}">Profile Settings</a></li>
 				</ul>
 
                 <h3 class="text-center">{{ $page_title ?? 'My Account' }}</h3>

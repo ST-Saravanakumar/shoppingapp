@@ -38,6 +38,10 @@ Route::get('/privacy-policy', function() {
 Route::group(['middleware' => 'auth'], function() {
 
     Route::get('/dashboard', [App\Http\Controllers\UserController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/profile_settings', [App\Http\Controllers\UserController::class, 'profile_settings'])->name('profile_settings');
+    Route::post('/profile_settings_post', [App\Http\Controllers\UserController::class, 'profile_settings_post'])->name('profile_settings.post');
+
     Route::post('/add_to_cart', [App\Http\Controllers\CartController::class, 'add'])->name('add_to_cart');
     // Route::post('/update_cart_item', [App\Http\Controllers\CartController::class, 'update'])->name('update_cart_item');
     Route::post('/remove_cart_item', [App\Http\Controllers\CartController::class, 'remove'])->name('remove_cart_item');

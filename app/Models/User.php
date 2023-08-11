@@ -10,12 +10,14 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Cashier\Billable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 use App\Models\Product;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, Billable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, Billable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -57,6 +59,13 @@ class User extends Authenticatable
     ];
 
     protected $guard_name = ['admin', 'web'];
+
+    public function registerMediaCollections(): void
+    {
+        $this
+        ->addMediaCollection('avatar')
+        ->singleFile();
+    }
 
     public function getNameAttribute() {
         return $this->attributes['first_name'];
