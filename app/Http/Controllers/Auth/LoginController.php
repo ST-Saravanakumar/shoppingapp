@@ -56,6 +56,8 @@ class LoginController extends Controller
             }
         
             return redirect()->route('root')->with('success', 'Welcome, '.ucfirst(auth()->user()->first_name));
+        } else {
+            return redirect()->route('login')->with('error', 'Invalid Credentials');
         }
     }
 
