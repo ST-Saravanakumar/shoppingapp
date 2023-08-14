@@ -1,5 +1,3 @@
-<script src="{{ URL::asset('/assets/frontend/js/jquery.toast.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.all.min.js"></script>
 <script>
     $(function() {
 
@@ -13,7 +11,7 @@
                     text: 'Please login before to continue...',
                     hideAfter: 3000,
                     icon: 'error',
-                    positon: 'top-right'
+                    position: 'top-right'
                 });
                 return;
             }
@@ -34,7 +32,7 @@
                             text: resp.error,
                             hideAfter: 3000,
                             icon: 'error',
-                            positon: 'top-right'
+                            position: 'top-right'
                         });
                     } else {
                         $.toast({
@@ -42,7 +40,7 @@
                             text: 'Item added to your cart successfully',
                             hideAfter: 3000,
                             icon: 'success',
-                            positon: 'top-right'
+                            position: 'top-right'
                         });
 
                         $('#cart-dropdown-html').html(resp.cart_html);
@@ -77,7 +75,7 @@
                         text: 'Item has been removed from cart',
                         hideAfter: 3000,
                         icon: 'info',
-                        positon: 'top-right'
+                        position: 'top-right'
                     });
 
                     $('#cart-dropdown-html').html(resp.cart_html);

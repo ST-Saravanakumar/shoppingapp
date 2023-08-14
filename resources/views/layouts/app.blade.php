@@ -30,7 +30,8 @@
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="{{ URL::asset('/assets/frontend/css/style.css') }}">
     <link href="{{ URL::asset('/css/custom_styles.css') }}">
-    <link href="{{ URL::asset('/assets/frontend/css/jquery.toast.css') }}">
+    <!-- <link href="{{ URL::asset('/assets/frontend/css/jquery.toast.css') }}"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css" integrity="sha512-8D+M+7Y6jVsEa7RD6Kv/Z7EImSpNpQllgaEIQAtqHcI0H6F4iZknRj0Nx1DCdB+TwBaS+702BGWYC0Ze2hpExQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.min.css">
     <style>
         span.error-field {
@@ -306,6 +307,8 @@
 
     <!-- Main Js File -->
     <script src="{{ URL::asset('/assets/frontend/js/script.js') }}"></script>
+    <script src="{{ URL::asset('/assets/frontend/js/jquery.toast.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.all.min.js"></script>
     <script>
         $(function() {
             $(document).on('click', '#logout-li', function() {
